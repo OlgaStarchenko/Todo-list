@@ -4,6 +4,7 @@
   --border-color: #6c63ff;
   --placeholder-color: #c3c1e5;
   --icon-image: url(./img/light.svg);
+  --complete-color: #25252580;
 }
 
 body.dark {
@@ -12,6 +13,7 @@ body.dark {
   --border-color: #f7f7f7;
   --placeholder-color: #666666;
   --icon-image: url(./img/dark.svg);
+  --complete-color: #ffffff80;
 }
 
 body {
@@ -123,12 +125,22 @@ body {
   border: 1px solid #6c63ff;
   background: none;
 }
+.todo__complete .todo__check {
+  background-image: url(./img/check.svg);
+  background-color: #6c63ff;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 .todo__name {
   font-weight: 500;
   font-size: 20px;
   line-height: 100%;
   letter-spacing: 0%;
   text-transform: uppercase;
+}
+.todo__complete .todo__name {
+  color: var(--complete-color);
+  text-decoration: line-through;
 }
 .todo__right {
   display: flex;
