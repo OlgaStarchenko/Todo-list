@@ -8,6 +8,8 @@ const modal = document.querySelector(".modal");
 const modalCancel = document.querySelector(".modal__cancel");
 const modalApply = document.querySelector(".modal__apply");
 const modalInput = document.querySelector(".modal__input");
+const modalTitle = document.querySelector(".modal__title");
+let editTodo = null;
 
 let todos = [
   {
@@ -27,9 +29,7 @@ let todos = [
   },
 ];
 
-footerButton.addEventListener("click", () => {
-  modal.classList.add("modal__open");
-});
+footerButton.addEventListener("click", openModal);
 modalCancel.addEventListener("click", closeModal);
 
 headerButton.addEventListener("click", () => {
@@ -42,13 +42,43 @@ modalApply.addEventListener("click", () => {
     alert("Название задачи не может быть пустой");
     return;
   }
-  todos.push({
-    id: Date.now(),
-    text: value,
-    isComplete: false,
-  });
+
+  if (editTodo) {
+    todos = todos.map((todo) => {
+      if (editTodo.id === todo.id) {
+        todo.text = value;
+      }
+      return todo;
+    });
+  } else {
+    todos.push({
+      id: Date.now(),
+      text: value,
+      isComplete: false,
+    });
+  }
+
   renderTodos(todos);
   closeModal();
+});
+
+headerInput.addEventListener("input", () => {
+  const value = headerInput.value.trim();
+  const serchTodos = todos.filter((todo) =>
+    todo.text.toLowerCase().includes(value.toLowerCase())
+  );
+  renderTodos(serchTodos);
+});
+
+headerSelect.addEventListener("change", () => {
+  const value = headerSelect.value;
+  let filterTodos = todos;
+  if (value === "complete") {
+    filterTodos = todos.filter((todo) => todo.isComplete);
+  } else if (value === "incomplete") {
+    filterTodos = todos.filter((todo) => !todo.isComplete);
+  }
+  renderTodos(filterTodos);
 });
 
 function renderTodos(list) {
@@ -61,6 +91,7 @@ function renderTodos(list) {
     const todoCheck = clone.querySelector(".todo__check");
     todoDelete.addEventListener("click", () => deleteTodo(task));
     todoCheck.addEventListener("click", () => completeTodo(task));
+    todoEdit.addEventListener("click", () => startEdit(task));
     todoName.textContent = task.text;
     if (task.isComplete) {
       const todo = clone.querySelector(".todo");
@@ -70,9 +101,15 @@ function renderTodos(list) {
   });
 }
 
+function openModal() {
+  modal.classList.add("modal__open");
+}
+
 function closeModal() {
   modal.classList.remove("modal__open");
   modalInput.value = "";
+  modalTitle.textContent = "NEW NOTE";
+  editTodo = null;
 }
 
 function deleteTodo(task) {
@@ -83,5 +120,12 @@ function deleteTodo(task) {
 function completeTodo(task) {
   task.isComplete = !task.isComplete;
   renderTodos(todos);
+}
+
+function startEdit(task) {
+  editTodo = task;
+  modalTitle.textContent = "EDIT NOTE";
+  openModal();
+  modalInput.value = task.text;
 }
 renderTodos(todos);
