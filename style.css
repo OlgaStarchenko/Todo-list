@@ -5,6 +5,7 @@
   --placeholder-color: #c3c1e5;
   --icon-image: url(./img/light.svg);
   --complete-color: #25252580;
+  --empty-image: url(./img/empty_lait.png);
 }
 
 body.dark {
@@ -14,6 +15,7 @@ body.dark {
   --placeholder-color: #666666;
   --icon-image: url(./img/dark.svg);
   --complete-color: #ffffff80;
+  --empty-image: url(./img/empty_dark.png);
 }
 
 body {
@@ -106,6 +108,29 @@ body {
   flex-direction: column;
   margin-top: 30px;
 }
+.empty__container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.empty__image {
+  background-image: var(--empty-image);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 221px;
+  height: 174px;
+}
+.empty__title {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: var(--color);
+}
+
 .todo {
   display: flex;
   justify-content: space-between;

@@ -9,25 +9,11 @@ const modalCancel = document.querySelector(".modal__cancel");
 const modalApply = document.querySelector(".modal__apply");
 const modalInput = document.querySelector(".modal__input");
 const modalTitle = document.querySelector(".modal__title");
+const emptyTemplate = document.querySelector(".empty__template");
+
 let editTodo = null;
 
-let todos = [
-  {
-    id: 1,
-    text: "note1",
-    isComplete: false,
-  },
-  {
-    id: 2,
-    text: "note2",
-    isComplete: true,
-  },
-  {
-    id: 3,
-    text: "note3",
-    isComplete: false,
-  },
-];
+let todos = getList();
 
 footerButton.addEventListener("click", openModal);
 modalCancel.addEventListener("click", closeModal);
@@ -83,6 +69,9 @@ headerSelect.addEventListener("change", () => {
 
 function renderTodos(list) {
   main.innerHTML = null;
+  if (list.length === 0) {
+    showEmpty();
+  }
   list.forEach((task) => {
     const clone = todoTemplate.content.cloneNode(true);
     const todoName = clone.querySelector(".todo__name");
@@ -99,6 +88,7 @@ function renderTodos(list) {
     }
     main.append(clone);
   });
+  saveList();
 }
 
 function openModal() {
@@ -129,3 +119,21 @@ function startEdit(task) {
   modalInput.value = task.text;
 }
 renderTodos(todos);
+
+function showEmpty() {
+  const clone = emptyTemplate.content.cloneNode(true);
+  main.append(clone);
+}
+
+function saveList() {
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+function getList() {
+  const saveTodos = localStorage.getItem("todos");
+  if (saveTodos) {
+    return JSON.parse(saveTodos);
+  } else {
+    return [];
+  }
+}
